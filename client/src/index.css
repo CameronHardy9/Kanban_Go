@@ -1,6 +1,6 @@
 :root {
     /*Light Theme*/    
-    --light-1: #F2F2F2;
+    --light-1: #eeeeee;
     --light-2: #D9D9D9;
     --light-3: #BFBFBF;
     --light-4: #A6A6A6;
@@ -24,7 +24,7 @@
 html {
     height: 100%;
     width: 100%;
-    background-color: var(--light-1);
+    background-color: var(--dark-5);
 }
 
 #root {
@@ -75,9 +75,23 @@ html {
 }
 
 .projectContent {
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.allColomns {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
+}
+
+.columnTitle {
+    text-align: center;
+    color: var(--light-5)
 }
 
 .dragItems {
@@ -86,9 +100,10 @@ html {
 }
 
 .dragItems > li {
-    border: 1px solid black;
+    box-shadow: 0px 0px 5px black;
     padding: 10px;
     width: 200px;
     height: 80px;
-    background-color: lightgray;
+    background-color: var(--light-1);
+    margin: 10px 20px;
 }
