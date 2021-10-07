@@ -1,33 +1,14 @@
 import React from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import TestContent from "./ProjectData";
+import Column from "./Column"
 
 class ProjectView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: props.userInfo,
-            cards: [
-                {
-                    id: 1,
-                    title: "Task 1",
-                    details: "Some details here",
-                },
-                {
-                    id: 2,
-                    title: "Task 2",
-                    details: "Some other details here",
-                },
-                {
-                    id: 3,
-                    title: "Task 3",
-                    details: "Some other kinds of details here",
-                },
-                {
-                    id: 4,
-                    title: "Task 4",
-                    details: "Last bit of details details here",
-                },
-            ],
+            cards: TestContent,
         };
     }
     // componentDidMount = () => {
@@ -57,43 +38,13 @@ class ProjectView extends React.Component {
         return (
             <>
                 <div className="projectContent">
-                    <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                        <Droppable droppableId="dropZone1">
-                            {(provided) => (
-                                <ul
-                                    className="dragItems"
-                                    {...provided.droppableProps}
-                                    ref={provided.innerRef}
-                                >
-                                    {this.state.cards.map(
-                                        ({ id, title, details }, index) => {
-                                            return (
-                                                <Draggable
-                                                    key={id}
-                                                    draggableId={String(id)}
-                                                    index={index}
-                                                >
-                                                    {(provided) => (
-                                                        <li
-                                                            ref={
-                                                                provided.innerRef
-                                                            }
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                        >
-                                                            <span>{title}</span>
-                                                            <p>{details}</p>
-                                                        </li>
-                                                    )}
-                                                </Draggable>
-                                            );
-                                        }
-                                    )}
-                                    {provided.placeholder}
-                                </ul>
-                            )}
-                        </Droppable>
-                    </DragDropContext>
+                    {this.state.cards.columnOrder.map((columnId) => {
+                        const column = this.state.cards.columns[columnId];
+                        const tasks = column.taskIds.map(
+                            (taskId) => this.state.cards.tasks[taskId]
+                        );
+                        return <Column key={columnId} column={column} tasks={tasks} />;
+                    })}
                 </div>
             </>
         );
