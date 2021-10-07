@@ -1,5 +1,5 @@
 import React from "react";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import { DragDropContext } from "react-beautiful-dnd";
 import TestContent from "./ProjectData";
 import Column from "./Column"
 
@@ -27,17 +27,18 @@ class ProjectView extends React.Component {
     //         });
     //     return server;
     // };
-    handleOnDragEnd = (result) => {
+    /*handleOnDragEnd = (result) => {
         if (!result.destination) return;
         const items = Array.from(this.state.cards);
         const [reorderedItem] = items.splice(result.source.index, 1);
         items.splice(result.destination.index, 0, reorderedItem);
         this.setState({ cards: items });
-    };
+    };*/
     render() {
         return (
             <>
                 <div className="projectContent">
+                    <DragDropContext onDragEnd={this.handleOnDragEnd}>
                     {this.state.cards.columnOrder.map((columnId) => {
                         const column = this.state.cards.columns[columnId];
                         const tasks = column.taskIds.map(
@@ -45,6 +46,7 @@ class ProjectView extends React.Component {
                         );
                         return <Column key={columnId} column={column} tasks={tasks} />;
                     })}
+                    </DragDropContext>
                 </div>
             </>
         );
