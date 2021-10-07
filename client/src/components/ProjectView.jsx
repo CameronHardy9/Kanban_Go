@@ -1,12 +1,33 @@
 import React from "react";
-import { LogoutButton } from "./Auth0Button";
-import NavBar from "./NavBar";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 class ProjectView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: props.userInfo,
+            cards: [
+                {
+                    id: 1,
+                    title: "Task 1",
+                    details: "Some details here",
+                },
+                {
+                    id: 2,
+                    title: "Task 2",
+                    details: "Some other details here",
+                },
+                {
+                    id: 3,
+                    title: "Task 3",
+                    details: "Some other kinds of details here",
+                },
+                {
+                    id: 4,
+                    title: "Task 4",
+                    details: "Last bit of details details here",
+                },
+            ],
         };
     }
     // componentDidMount = () => {
@@ -25,12 +46,55 @@ class ProjectView extends React.Component {
     //         });
     //     return server;
     // };
+    handleOnDragEnd = (result) => {
+        if (!result.destination) return;
+        const items = Array.from(this.state.cards);
+        const [reorderedItem] = items.splice(result.source.index, 1);
+        items.splice(result.destination.index, 0, reorderedItem);
+        this.setState({ cards: items });
+    };
     render() {
-        console.log(this.state.user);
         return (
             <>
-                <NavBar name={this.state.user.name} />
-                <h1>Project View!</h1>
+                <div className="projectContent">
+                    <DragDropContext onDragEnd={this.handleOnDragEnd}>
+                        <Droppable droppableId="dropZone1">
+                            {(provided) => (
+                                <ul
+                                    className="dragItems"
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                >
+                                    {this.state.cards.map(
+                                        ({ id, title, details }, index) => {
+                                            return (
+                                                <Draggable
+                                                    key={id}
+                                                    draggableId={String(id)}
+                                                    index={index}
+                                                >
+                                                    {(provided) => (
+                                                        <li
+                                                            ref={
+                                                                provided.innerRef
+                                                            }
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                        >
+                                                            <span>{title}</span>
+                                                            <p>{details}</p>
+                                                        </li>
+                                                    )}
+                                                </Draggable>
+                                            );
+                                        }
+                                    )}
+                                    {provided.placeholder}
+                                </ul>
+                            )}
+                        </Droppable>
+                    </DragDropContext>
+                </div>
             </>
         );
     }
