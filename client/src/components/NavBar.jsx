@@ -1,17 +1,29 @@
-import React from 'react';
+import React from "react";
 import { LogoutButton } from "./Auth0Button";
 
 class NavBar extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            isAuthenticated: this.props.isAuthenticated,
+            email: this.props.email
+        }
     }
-    render(){
-        return(
+    render() {
+        console.log(this.props.isAuthenticated, this.props.email)
+        return (
             <div className="navBar">
-                <span>Logged in as {this.props.name}</span>
-                <LogoutButton />
+                <h1 className="navTitle">Kanban Go</h1>
+                {this.props.isAuthenticated && (
+                    <>
+                        <span className="loggedInAs">
+                            Logged in as {this.props.email}
+                        </span>
+                        <LogoutButton />
+                    </>
+                )}
             </div>
-        )
+        );
     }
 }
 
