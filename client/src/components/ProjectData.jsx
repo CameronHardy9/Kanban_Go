@@ -2,32 +2,32 @@ const TestContent = {
     tasks: {
         "task1": {
             id: "task1",
-            title: "Task 1",
+            task: "Task 1",
             details: "Some details here",
         },
         "task2": {
             id: "task2",
-            title: "Task 2",
+            task: "Task 2",
             details: "Some other details here",
         },
         "task3": {
             id: "task3",
-            title: "Task 3",
+            task: "Task 3",
             details: "Some other kinds of details here",
         },
         "task4": {
             id: "task4",
-            title: "Task 4",
+            task: "Task 4",
             details: "Last bit of details details here",
         },
         "task5": {
             id: "task5",
-            title: "Task 5",
+            task: "Task 5",
             details: "Last bit of details details here",
         },
         "task6": {
             id: "task6",
-            title: "Task 6",
+            task: "Task 6",
             details: "Last bit of details details here",
         },
     },
