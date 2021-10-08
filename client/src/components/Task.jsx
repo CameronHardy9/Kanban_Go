@@ -12,7 +12,7 @@ class Task extends React.Component {
                     <li
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
-                        innerRef={provided.innerRef}
+                        ref={provided.innerRef}
                     >
                         <h4>{this.props.task.task}</h4>
                         <p>{this.props.task.details}</p>

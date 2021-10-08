@@ -10,9 +10,9 @@ class Column extends React.Component {
                 <Droppable droppableId={this.props.column.id}>
                     {(provided) => (
                         <ul
-                            innerRef={provided.innerRef}
-                            {...provided.droppableProps}
                             className="dragItems"
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
                         >
                             {this.props.tasks.map((task, index) => (
                                 <Task key={task.id} task={task} index={index} />
