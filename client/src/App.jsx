@@ -1,15 +1,24 @@
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Home from "./components/Home.jsx";
 import { useAuth0 } from "@auth0/auth0-react";
 import ProjectView from "./components/ProjectView.jsx";
 import NavBar from "./components/NavBar";
+import React, { useState, useEffect } from "react";
 
 function App() {
     const { isAuthenticated, user } = useAuth0();
+    const [auth, setAuth] = useState(false);
+    const [userInfo, setUserInfo] = useState(undefined);
+
+    useEffect(() => {
+        setAuth(isAuthenticated);
+        setUserInfo(user);
+    }, [isAuthenticated, user])
+
     return (
         <>
-            {isAuthenticated ? (
-                <NavBar isAuthenticated={isAuthenticated} email={user.name} />
+            {auth ? (
+                <NavBar auth={auth} email={userInfo.name} />
             ) : (
                 <NavBar />
             )}
@@ -17,16 +26,13 @@ function App() {
                 <Route exact path="/">
                     <Home />
                 </Route>
-                {isAuthenticated ? (
+                {auth ? (
                     <Route path="/app">
-                        <ProjectView userInfo={user} />
+                        <ProjectView userInfo={userInfo} />
                     </Route>
                 ) : (
                     <>
-                        <Link exact to="/">
-                            Home
-                        </Link>
-                        <h1>Loading...</h1>
+                        <div className="loader"></div>
                     </>
                 )}
             </Switch>
