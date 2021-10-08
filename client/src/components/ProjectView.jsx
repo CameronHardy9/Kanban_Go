@@ -1,7 +1,7 @@
 import React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import TestContent from "./ProjectData";
-import Column from "./Column"
+import Column from "./Column";
 
 class ProjectView extends React.Component {
     constructor(props) {
@@ -27,25 +27,57 @@ class ProjectView extends React.Component {
     //         });
     //     return server;
     // };
-    /*handleOnDragEnd = (result) => {
-        if (!result.destination) return;
-        const items = Array.from(this.state.cards);
-        const [reorderedItem] = items.splice(result.source.index, 1);
-        items.splice(result.destination.index, 0, reorderedItem);
-        this.setState({ cards: items });
-    };*/
+    handleOnDragEnd = (result) => {
+        const { destination, source, draggableId } = result;
+
+        if (!destination) {
+            return;
+        }
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        const column = this.state.cards.columns[source.droppableId];
+        const newTaskIds = Array.from(column.taskIds);
+        newTaskIds.splice(source.index, 1);
+        newTaskIds.splice(destination.index, 0, draggableId);
+
+        const newColumn = {
+            ...column,
+            taskIds: newTaskIds,
+        };
+
+        const newState = {
+            ...this.state.cards,
+            columns: {
+                ...this.state.cards.columns,
+                [newColumn.id]: newColumn,
+            },
+        };
+
+        this.setState({ cards: newState });
+    };
     render() {
         return (
             <>
                 <div className="projectContent">
                     <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                    {this.state.cards.columnOrder.map((columnId) => {
-                        const column = this.state.cards.columns[columnId];
-                        const tasks = column.taskIds.map(
-                            (taskId) => this.state.cards.tasks[taskId]
-                        );
-                        return <Column key={columnId} column={column} tasks={tasks} />;
-                    })}
+                        {this.state.cards.columnOrder.map((columnId) => {
+                            const column = this.state.cards.columns[columnId];
+                            const tasks = column.taskIds.map(
+                                (taskId) => this.state.cards.tasks[taskId]
+                            );
+                            return (
+                                <Column
+                                    key={columnId}
+                                    column={column}
+                                    tasks={tasks}
+                                />
+                            );
+                        })}
                     </DragDropContext>
                 </div>
             </>
