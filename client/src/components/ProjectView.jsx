@@ -12,7 +12,7 @@ class ProjectView extends React.Component {
         };
     }
     // componentDidMount = () => {
-    //     const server = fetch("http://localhost:8080/users", {
+    //     const server = fetch("http://localhost:8000/user", {
     //         method: "POST",
     //         mode: "cors",
     //     })
@@ -63,22 +63,34 @@ class ProjectView extends React.Component {
     render() {
         return (
             <>
-                <div className="projectContent">
-                    <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                        {this.state.cards.columnOrder.map((columnId) => {
-                            const column = this.state.cards.columns[columnId];
-                            const tasks = column.taskIds.map(
-                                (taskId) => this.state.cards.tasks[taskId]
-                            );
-                            return (
-                                <Column
-                                    key={columnId}
-                                    column={column}
-                                    tasks={tasks}
-                                />
-                            );
-                        })}
-                    </DragDropContext>
+                <div className="projectView">
+                <div className="projectNav">
+                    <details>
+                        <summary>My Projects</summary>
+                        <ul>
+                            <li>Project 1</li>
+                            <li>Project 2</li>
+                            <li>Project 3</li>
+                        </ul>
+                    </details>
+                </div>
+                    <div className="projectSelection">
+                        <DragDropContext onDragEnd={this.handleOnDragEnd}>
+                            {this.state.cards.columnOrder.map((columnId) => {
+                                const column = this.state.cards.columns[columnId];
+                                const tasks = column.taskIds.map(
+                                    (taskId) => this.state.cards.tasks[taskId]
+                                );
+                                return (
+                                    <Column
+                                        key={columnId}
+                                        column={column}
+                                        tasks={tasks}
+                                    />
+                                );
+                            })}
+                        </DragDropContext>
+                    </div>
                 </div>
             </>
         );
