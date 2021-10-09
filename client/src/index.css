@@ -30,6 +30,10 @@ html {
 #root {
     height: 100vh;
     width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
 }
 
 .navBar {
@@ -75,19 +79,36 @@ html {
     font-size: 16px;
 }
 
-.projectContent {
-    margin: 10px;
+.projectView {
+    flex-grow: 1;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
-.allColomns {
+.projectNav {
+    padding: 10px;
+    height: 100%;
+    width: 200px;
+    border-right: 1px solid var(--light-5);
+}
+
+.projectSelection {
+    padding: 10px;
+    align-self: stretch;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    overflow: scroll;
+}
+
+.allColumns {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .columnTitle {
@@ -109,9 +130,16 @@ html {
     margin: 0px 20px 10px 20px;
 }
 
+.loaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
 .loader {
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     border: 8px solid var(--light-5);
     animation:
