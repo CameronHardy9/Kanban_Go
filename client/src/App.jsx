@@ -4,21 +4,25 @@ import { useAuth0 } from "@auth0/auth0-react";
 import ProjectView from "./components/ProjectView.jsx";
 import NavBar from "./components/NavBar";
 import React, { useState, useEffect } from "react";
+import storage from "./utils/localStorageInterface.js";
+import useForceUpdate from "./utils/forceUpdate.js";
 
 function App() {
-    const { isAuthenticated, user } = useAuth0();
-    const [auth, setAuth] = useState(false);
-    const [userInfo, setUserInfo] = useState(undefined);
+    const { user } = useAuth0();
 
+    const [userInfo] = useState(storage.get("KanbanGoAuth"));
+    const [loggedIn] = useState(storage.get("loggedIn"));
+    //console.log(userInfo.sub.split('|')[1])
     useEffect(() => {
-        setAuth(isAuthenticated);
-        setUserInfo(user);
-    }, [isAuthenticated, user])
-
+        if (user) {
+            storage.set("KanbanGoAuth", user);
+            storage.set("loggedIn", true);
+        }
+    });
     return (
         <>
-            {auth ? (
-                <NavBar auth={auth} email={userInfo.name} />
+            {userInfo ? (
+                <NavBar loggedIn={loggedIn} userInfo={storage.get("KanbanGoAuth")} />
             ) : (
                 <NavBar />
             )}
@@ -26,9 +30,9 @@ function App() {
                 <Route exact path="/">
                     <Home />
                 </Route>
-                {auth ? (
+                {userInfo ? (
                     <Route path="/app">
-                        <ProjectView userInfo={userInfo} />
+                        <ProjectView userInfo={storage.get("KanbanGoAuth")} />
                     </Route>
                 ) : (
                     <>
