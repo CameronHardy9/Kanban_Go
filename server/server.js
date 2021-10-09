@@ -1,7 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const {join} = require('path');
-const users = require('../routes/users');
+const api = require('../routes/api');
 const projects = require('../routes/projects');
 require('dotenv').config();
 
@@ -13,7 +13,7 @@ app.use(morgan('dev'));
 app.use(express.static(join(__dirname, '../client/build')));
 
 app.use('/app', projects);
-app.use('/users', users);
+app.use('/api', api);
 
 app.listen(port, () => {
     console.log('Listening on port', port);
