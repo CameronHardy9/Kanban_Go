@@ -1,14 +1,15 @@
 import React from "react";
 import { DragDropContext } from "react-beautiful-dnd";
-import TestContent from "./ProjectData";
+import Projects from "./ProjectData";
 import Column from "./Column";
+import ProjectNav from "./ProjectNav";
 
 class ProjectView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: props.userInfo,
-            cards: TestContent,
+            cards: Projects,
         };
     }
     // componentDidMount = () => {
@@ -40,7 +41,7 @@ class ProjectView extends React.Component {
             return;
         }
 
-        const column = this.state.cards.columns[source.droppableId];
+        const column = this.state.cards.project1.columns[source.droppableId];
         const newTaskIds = Array.from(column.taskIds);
         newTaskIds.splice(source.index, 1);
         newTaskIds.splice(destination.index, 0, draggableId);
@@ -51,9 +52,9 @@ class ProjectView extends React.Component {
         };
 
         const newState = {
-            ...this.state.cards,
+            ...this.state.cards.project1,
             columns: {
-                ...this.state.cards.columns,
+                ...this.state.cards.project1.columns,
                 [newColumn.id]: newColumn,
             },
         };
@@ -64,22 +65,13 @@ class ProjectView extends React.Component {
         return (
             <>
                 <div className="projectView">
-                <div className="projectNav">
-                    <details>
-                        <summary>My Projects</summary>
-                        <ul>
-                            <li>Project 1</li>
-                            <li>Project 2</li>
-                            <li>Project 3</li>
-                        </ul>
-                    </details>
-                </div>
+                    <ProjectNav projects={Projects}/>
                     <div className="projectSelection">
                         <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                            {this.state.cards.columnOrder.map((columnId) => {
-                                const column = this.state.cards.columns[columnId];
+                            {this.state.cards.project1.columnOrder.map((columnId) => {
+                                const column = this.state.cards.project1.columns[columnId];
                                 const tasks = column.taskIds.map(
-                                    (taskId) => this.state.cards.tasks[taskId]
+                                    (taskId) => this.state.cards.project1.tasks[taskId]
                                 );
                                 return (
                                     <Column
