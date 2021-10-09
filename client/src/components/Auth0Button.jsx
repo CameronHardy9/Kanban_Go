@@ -9,8 +9,7 @@ const LogoutButton = () => {
     const { logout } = useAuth0();
     return <button className="logoutButton" onClick={() => {
         logout();
-        localStorage.removeItem("KanbanGoAuth");
-        localStorage.setItem("loggedIn", false);
+        sessionStorage.removeItem("KanbanGoAuth");
     }}>Sign Out</button>;
 };
 

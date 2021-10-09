@@ -9,7 +9,7 @@ class NavBar extends React.Component {
                 <Link className="navTitle" to="/">
                     <h1>Kanban Go</h1>
                 </Link>
-                {this.props.loggedIn && (
+                {this.props.userInfo && (
                     <>
                         <span className="loggedInAs">
                             Logged in as {this.props.userInfo.email}
