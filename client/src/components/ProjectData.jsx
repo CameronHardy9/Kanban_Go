@@ -30,6 +30,26 @@ const TestContent = {
             task: "Task 6",
             details: "Last bit of details details here",
         },
+        "task7": {
+            id: "task7",
+            task: "Task 7",
+            details: "Last bit of details details here",
+        },
+        "task8": {
+            id: "task8",
+            task: "Task 8",
+            details: "Last bit of details details here",
+        },
+        "task9": {
+            id: "task9",
+            task: "Task 9",
+            details: "Last bit of details details here",
+        },
+        "task10": {
+            id: "task10",
+            task: "Task 10",
+            details: "Last bit of details details here",
+        },
     },
     columns: {
         "column1": {
@@ -41,9 +61,19 @@ const TestContent = {
             id: "column2",
             title: "Title2",
             taskIds: ["task5", "task6"]
+        },
+        "column3": {
+            id: "column3",
+            title: "Title3",
+            taskIds: ["task7", "task8"]
+        },
+        "column4": {
+            id: "column4",
+            title: "Title4",
+            taskIds: ["task9", "task10"]
         }
     },
-    columnOrder: ["column1", "column2"],
+    columnOrder: ["column1", "column2", "column3", "column4"],
 };
 
 export default TestContent;
