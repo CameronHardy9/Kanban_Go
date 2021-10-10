@@ -4,6 +4,7 @@ import { Droppable } from "react-beautiful-dnd";
 
 class Column extends React.Component {
     render() {
+        console.log("Column.jsx")
         return (
             <div className="allColumns">
                 <h2 className="columnTitle">{this.props.column.title}</h2>
