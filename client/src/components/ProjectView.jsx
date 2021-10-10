@@ -1,4 +1,5 @@
 import React from "react";
+import { Route } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
 import Projects from "./ProjectData";
 import Column from "./Column";
@@ -28,58 +29,69 @@ class ProjectView extends React.Component {
     //         });
     //     return server;
     // };
-    handleOnDragEnd = (result) => {
-        const { destination, source, draggableId } = result;
+    //BROKEN AFTER DATA WAS CHANGED TO ACCOMMODATE MULTIPLE PROJECTS - NEEDS REFACTOR TO UPDATE ONE PROJECT IN A COLLECTION
+    // handleOnDragEnd = (result) => {
+    //     const { destination, source, draggableId } = result;
 
-        if (!destination) {
-            return;
-        }
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        ) {
-            return;
-        }
+    //     if (!destination) {
+    //         return;
+    //     }
+    //     if (
+    //         destination.droppableId === source.droppableId &&
+    //         destination.index === source.index
+    //     ) {
+    //         return;
+    //     }
 
-        const column = this.state.cards.project1.columns[source.droppableId];
-        const newTaskIds = Array.from(column.taskIds);
-        newTaskIds.splice(source.index, 1);
-        newTaskIds.splice(destination.index, 0, draggableId);
+    //     const column = this.state.cards.project1.columns[source.droppableId];
+    //     const newTaskIds = Array.from(column.taskIds);
+    //     newTaskIds.splice(source.index, 1);
+    //     newTaskIds.splice(destination.index, 0, draggableId);
 
-        const newColumn = {
-            ...column,
-            taskIds: newTaskIds,
-        };
+    //     const newColumn = {
+    //         ...column,
+    //         taskIds: newTaskIds,
+    //     };
 
-        const newState = {
-            ...this.state.cards.project1,
-            columns: {
-                ...this.state.cards.project1.columns,
-                [newColumn.id]: newColumn,
-            },
-        };
+    //     const newState = {
+    //         ...this.state.cards.project1,
+    //         columns: {
+    //             ...this.state.cards.project1.columns,
+    //             [newColumn.id]: newColumn,
+    //         },
+    //     };
 
-        this.setState({ cards: newState });
-    };
+    //     this.setState({ cards: newState });
+    // };
     render() {
         return (
             <>
                 <div className="projectView">
-                    <ProjectNav projects={Projects}/>
+                    <ProjectNav projects={Projects} />
                     <div className="projectSelection">
                         <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                            {this.state.cards.project1.columnOrder.map((columnId) => {
-                                const column = this.state.cards.project1.columns[columnId];
-                                const tasks = column.taskIds.map(
-                                    (taskId) => this.state.cards.project1.tasks[taskId]
-                                );
-                                return (
-                                    <Column
-                                        key={columnId}
-                                        column={column}
-                                        tasks={tasks}
-                                    />
-                                );
+                            {Object.keys(this.state.cards).map((key) => {
+                                const project = this.state.cards[key];
+                                <Route path={`/${key}`}>
+                                    {project.columnOrder.map(
+                                        (columnId) => {
+                                            const column =
+                                                project.columns[columnId];
+                                            const tasks = column.taskIds.map(
+                                                (taskId) =>
+                                                    project.tasks[taskId]
+                                                );
+                                                    console.log(columnId, column, tasks)
+                                            return (
+                                                <Column
+                                                    key={columnId}
+                                                    column={column}
+                                                    tasks={tasks}
+                                                />
+                                            );
+                                        }
+                                    )}
+                                </Route>;
                             })}
                         </DragDropContext>
                     </div>
