@@ -3,7 +3,6 @@ import { Draggable } from "react-beautiful-dnd";
 
 class Task extends React.Component {
     render() {
-        console.log("Task.jsx")
         return (
             <Draggable
                 draggableId={this.props.task.id}
