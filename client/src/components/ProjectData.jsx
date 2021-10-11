@@ -1,4 +1,4 @@
-const Projects = {
+let Projects = {
     project1: {
         tasks: {
             "task1": {
