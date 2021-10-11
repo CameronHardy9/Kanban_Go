@@ -1,16 +1,16 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
 import Projects from "./ProjectData";
 import Column from "./Column";
 import ProjectNav from "./ProjectNav";
-
 class ProjectView extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             user: props.userInfo,
-            cards: Projects,
+            allData: Projects,
+            currentSelection: window.location.pathname.split('/').at(-1),
         };
     }
     // componentDidMount = () => {
@@ -29,61 +29,86 @@ class ProjectView extends React.Component {
     //         });
     //     return server;
     // };
-    //BROKEN AFTER DATA WAS CHANGED TO ACCOMMODATE MULTIPLE PROJECTS - NEEDS REFACTOR TO UPDATE ONE PROJECT IN A COLLECTION
-    // handleOnDragEnd = (result) => {
-    //     const { destination, source, draggableId } = result;
+    componentDidUpdate = () => {
+        console.log("update");
+        const present = window.location.pathname.split('/').at(-1);
+        if (present !== this.state.currentSelection) {
+            this.setState({currentSelection: present})
+        }
+    }
+    // result = {combine: null
+    // destination: {droppableId: 'column1', index: 3}
+    // draggableId: "task3"
+    // mode: "FLUID"
+    // reason: "DROP"
+    // source: {index: 2, droppableId: 'column1'}
+    // type: "DEFAULT"}
+    
+    handleOnDragEnd = (result) => {
+        const { destination, source, draggableId } = result;
 
-    //     if (!destination) {
-    //         return;
-    //     }
-    //     if (
-    //         destination.droppableId === source.droppableId &&
-    //         destination.index === source.index
-    //     ) {
-    //         return;
-    //     }
+        if(this.state.currentSelection === "app") {
+            return;
+        }
+        if (!destination) {
+            return;
+        }
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
 
-    //     const column = this.state.cards.project1.columns[source.droppableId];
-    //     const newTaskIds = Array.from(column.taskIds);
-    //     newTaskIds.splice(source.index, 1);
-    //     newTaskIds.splice(destination.index, 0, draggableId);
+        const column = this.state.allData[this.state.currentSelection].columns[source.droppableId];
+        const newTaskIds = Array.from(column.taskIds);
+        newTaskIds.splice(source.index, 1);
+        newTaskIds.splice(destination.index, 0, draggableId);
 
-    //     const newColumn = {
-    //         ...column,
-    //         taskIds: newTaskIds,
-    //     };
+        const newColumn = {
+            ...column,
+            taskIds: newTaskIds,
+        };
 
-    //     const newState = {
-    //         ...this.state.cards.project1,
-    //         columns: {
-    //             ...this.state.cards.project1.columns,
-    //             [newColumn.id]: newColumn,
-    //         },
-    //     };
+        const newOrder = {
+            ...this.state.allData[this.state.currentSelection],
+            columns: {
+                ...this.state.allData[this.state.currentSelection].columns,
+                [newColumn.id]: newColumn,
+            },
+        };
 
-    //     this.setState({ cards: newState });
-    // };
+        const newState = {
+            ...this.state.allData,
+            [this.state.currentSelection]: {
+                ...newOrder
+            }
+        }
+
+        this.setState({ allData: newState });
+        console.log("update state")
+    };
     render() {
+        console.log(this.state.currentSelection)
         return (
             <>
                 <div className="projectView">
                     <ProjectNav projects={Projects} />
                     <div className="projectSelection">
-                        <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                            {Object.keys(this.state.cards).map((key, index) => {
-                                const project = this.state.cards[key];
-                                return (
-                                    <Route key={index} path={`/app/${key}`}>
-                                        {project.columnOrder.map((columnId) => {
-                                            const column = project.columns[columnId];
-                                            const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
-                                            console.log(columnId, column, tasks);
-                                            return(<Column key={columnId} column={column} tasks={tasks} />)
-                                        })}
-                                    </Route>
-                                );
-                            })}
-                        </DragDropContext>
+                            <DragDropContext onDragEnd={this.handleOnDragEnd}>
+                                {Object.keys(this.state.allData).map((key, index) => {
+                                    const project = this.state.allData[key];
+                                    return (
+                                        <Route key={index} path={`/app/${key}`}>
+                                            {project.columnOrder.map((columnId) => {
+                                                const column = project.columns[columnId];
+                                                const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
+                                                return(<Column key={columnId} column={column} tasks={tasks} />)
+                                            })}
+                                        </Route>
+                                    );
+                                })}
+                            </DragDropContext>
                     </div>
                 </div>
             </>
