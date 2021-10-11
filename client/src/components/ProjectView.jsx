@@ -70,28 +70,18 @@ class ProjectView extends React.Component {
                     <ProjectNav projects={Projects} />
                     <div className="projectSelection">
                         <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                            {Object.keys(this.state.cards).map((key) => {
+                            {Object.keys(this.state.cards).map((key, index) => {
                                 const project = this.state.cards[key];
-                                <Route path={`/${key}`}>
-                                    {project.columnOrder.map(
-                                        (columnId) => {
-                                            const column =
-                                                project.columns[columnId];
-                                            const tasks = column.taskIds.map(
-                                                (taskId) =>
-                                                    project.tasks[taskId]
-                                                );
-                                                    console.log(columnId, column, tasks)
-                                            return (
-                                                <Column
-                                                    key={columnId}
-                                                    column={column}
-                                                    tasks={tasks}
-                                                />
-                                            );
-                                        }
-                                    )}
-                                </Route>;
+                                return (
+                                    <Route key={index} path={`/app/${key}`}>
+                                        {project.columnOrder.map((columnId) => {
+                                            const column = project.columns[columnId];
+                                            const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
+                                            console.log(columnId, column, tasks);
+                                            return(<Column key={columnId} column={column} tasks={tasks} />)
+                                        })}
+                                    </Route>
+                                );
                             })}
                         </DragDropContext>
                     </div>
