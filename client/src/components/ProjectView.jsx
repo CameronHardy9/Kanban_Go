@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
 import Projects from "./ProjectData";
 import Column from "./Column";
