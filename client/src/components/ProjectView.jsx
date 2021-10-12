@@ -1,9 +1,10 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, withRouter } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
 import Projects from "./ProjectData";
 import Column from "./Column";
 import ProjectNav from "./ProjectNav";
+
 class ProjectView extends React.Component {
     constructor(props) {
         super(props);
@@ -12,7 +13,7 @@ class ProjectView extends React.Component {
             allData: Projects,
             currentSelection: window.location.pathname.split('/').at(-1),
         };
-    }
+    };
     // componentDidMount = () => {
     //     const server = fetch("http://localhost:8000/user", {
     //         method: "POST",
@@ -35,15 +36,7 @@ class ProjectView extends React.Component {
         if (present !== this.state.currentSelection) {
             this.setState({currentSelection: present})
         }
-    }
-    // result = {combine: null
-    // destination: {droppableId: 'column1', index: 3}
-    // draggableId: "task3"
-    // mode: "FLUID"
-    // reason: "DROP"
-    // source: {index: 2, droppableId: 'column1'}
-    // type: "DEFAULT"}
-    
+    };
     handleOnDragEnd = (result) => {
         const { destination, source, draggableId } = result;
 
@@ -116,4 +109,4 @@ class ProjectView extends React.Component {
     }
 }
 
-export default ProjectView;
+export default withRouter(ProjectView);
