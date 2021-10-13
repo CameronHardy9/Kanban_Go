@@ -1,6 +1,7 @@
 const express = require('express');
 const morgan = require('morgan');
 const helmet = require('helmet');
+const cors = require('cors')
 const {join} = require('path');
 const api = require('../routes/api');
 const projects = require('../routes/projects');
@@ -10,8 +11,9 @@ const port = process.env.PORT || 8000;
 
 const app = express();
 
+//app.use(helmet());
+app.use(cors());
 app.use(morgan('dev'));
-app.use(helmet());
 app.use(express.json());
 app.use(express.static(join(__dirname, '../client/build')));
 
