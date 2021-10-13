@@ -31,7 +31,6 @@ class ProjectView extends React.Component {
     //     return server;
     // };
     componentDidUpdate = () => {
-        console.log("update");
         const present = window.location.pathname.split('/').at(-1);
         if (present !== this.state.currentSelection) {
             this.setState({currentSelection: present})
@@ -79,10 +78,8 @@ class ProjectView extends React.Component {
         }
 
         this.setState({ allData: newState });
-        console.log("update state")
     };
     render() {
-        console.log(this.state.currentSelection)
         return (
             <>
                 <div className="projectView">
