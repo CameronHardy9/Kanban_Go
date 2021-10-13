@@ -2,13 +2,13 @@ const dataConnect = require('../database/db')
 const express = require('express');
 const router = express.Router();
 
-router.get('/user', (req, res) => {
-    dataConnect(req);
-    res.send("GET from Express")
+router.get('/user/:id', async (req, res) => {
+    result = await dataConnect(req.method, req.params.id);
+    res.send(result)
 })
 
-router.post('/user', (req, res) => {
-    dataConnect(req);
+router.post('/user/:id', (req, res) => {
+    dataConnect(req.method, req.params.id, req.body);
     res.send("POST Hello from Express")
 })
 
