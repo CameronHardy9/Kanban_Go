@@ -1,59 +1,40 @@
 const {join} = require('path');
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config({path: join(__dirname, '../.env')})
 
 
-async function dataConnect() {
+async function dataConnect(req) {
+    const method = req.method;
+    const body = req.body
     const uri = process.env.MONGO_DB_URI;
     const client = new MongoClient(uri);
 
-    try {
-        await client.connect();
+    if(method === "POST") {
+        try {
+            await client.connect();
+            const result = await client.db("Kanban_Go").collection("Users").insertOne(body);
+            console.log(`New listing created with the following id: ${result.insertedId}`); 
+        } catch (e) {
+            console.error(e);
     
-        await listDatabases(client);
-     
-    } catch (e) {
-        console.error(e);
+        } finally {
+            await client.close();
+        }
+    }
 
-    } finally {
-        await client.close();
+    if(method === "GET") {
+        try {
+            await client.connect();
+            const result = await client.db("Kanban_Go").collection("Users").find({"_id": ObjectId("6165facae4108c1f271286a5")});
+            console.log(`Found listing:\n ${result}`); 
+        } catch (e) {
+            console.error(e);
+    
+        } finally {
+            await client.close();
+        }
     }
 }
 
-async function listDatabases(client){
-    databasesList = await client.db().admin().listDatabases();
- 
-    console.log("Databases:");
-    databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-};
-
-dataConnect().catch(console.error);
-
-// function dataConnect(method) {
-//     const database = mysql.createConnection({
-//         host: process.env.DB_HOST,
-//         user: process.env.DB_USER,
-//         password: process.env.DB_PASSWORD,
-//         database: process.env.DB
-//     })
-    
-//     database.connect((err) => {
-//         if(err) {
-//             console.error(err);
-//             return;
-//         }
-//         console.log(method,"Successful connection to database...");
-//     });
-    
-//     //database.query()
-    
-//     database.end((err) => {
-//         if(err) {
-//             console.error(err);
-//             return;
-//         }
-//         console.log(method, "Successful disconnection from database...");
-//     });
-// }
 
 module.exports = dataConnect;
