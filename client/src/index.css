@@ -94,6 +94,27 @@ html {
     border-right: 1px solid var(--light-5);
 }
 
+.projectNavLinks {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.projectNavLinks > li {
+    padding-top: 5px;
+}
+
+.projectLink {
+    text-decoration: none;
+    color: var(--light-5);
+}
+
+#newProjectButton {
+    border: none;
+    background-color: transparent;
+    color: var(--light-5);
+    padding: 0;
+}
+
 .projectSelection {
     padding: 10px;
     align-self: stretch;
