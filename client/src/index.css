@@ -108,11 +108,23 @@ html {
     color: var(--light-5);
 }
 
+.projectLink:hover {
+    color: black;
+}
+
+.projectLink:focus {
+    color: black;
+}
+
 #newProjectButton {
     border: none;
     background-color: transparent;
     color: var(--light-5);
     padding: 0;
+}
+
+#newProjectButton:active {
+    color: black;
 }
 
 .projectSelection {
