@@ -1,6 +1,7 @@
-//const mysql = require('mysql');
+const {join} = require('path');
 const { MongoClient } = require('mongodb');
-require('dotenv').config();
+require('dotenv').config({path: join(__dirname, '../.env')})
+
 
 async function dataConnect() {
     const uri = process.env.MONGO_DB_URI;
