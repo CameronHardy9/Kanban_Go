@@ -3,7 +3,7 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 
 async function dataConnect() {
-    const uri = "mongodb+srv://CameronHardy9:John0330@cluster0.aivij.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+    const uri = process.env.MONGO_DB_URI;
     const client = new MongoClient(uri);
 
     try {
