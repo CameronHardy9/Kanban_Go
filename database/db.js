@@ -3,17 +3,15 @@ const { MongoClient, ObjectId } = require('mongodb');
 require('dotenv').config({path: join(__dirname, '../.env')})
 
 
-async function dataConnect(req) {
-    const method = req.method;
-    const body = req.body
+async function dataConnect(method, id, body) {
     const uri = process.env.MONGO_DB_URI;
     const client = new MongoClient(uri);
 
-    if(method === "POST") {
+    if(method === "GET") {
         try {
             await client.connect();
-            const result = await client.db("Kanban_Go").collection("Users").insertOne(body);
-            console.log(`New listing created with the following id: ${result.insertedId}`); 
+            const result = await client.db("Kanban_Go").collection("Users").findOne({"_id": id});
+            return result; 
         } catch (e) {
             console.error(e);
     
@@ -22,14 +20,13 @@ async function dataConnect(req) {
         }
     }
 
-    if(method === "GET") {
+    if(method === "POST") {
         try {
             await client.connect();
-            const result = await client.db("Kanban_Go").collection("Users").find({"_id": ObjectId("6165facae4108c1f271286a5")});
-            console.log(`Found listing:\n ${result}`); 
+            const result = await client.db("Kanban_Go").collection("Users").insertOne({"_id": id, ...body});
+            console.log(`New listing created with the following id: ${result.insertedId}`); 
         } catch (e) {
-            console.error(e);
-    
+            console.error(e)
         } finally {
             await client.close();
         }
