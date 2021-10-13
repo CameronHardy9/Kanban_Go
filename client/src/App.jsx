@@ -10,7 +10,6 @@ function App() {
     const { user } = useAuth0();
 
     const [userInfo, setUserInfo] = useState(undefined);
-    //console.log(userInfo.sub.split('|')[1])
     useEffect(() => {
         if (user) {
             storage.set("KanbanGoAuth", user);
