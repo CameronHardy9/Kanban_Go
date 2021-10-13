@@ -10,26 +10,28 @@ class ProjectView extends React.Component {
         super(props);
         this.state = {
             user: props.userInfo,
-            allData: Projects,
+            allData: undefined,
             currentSelection: window.location.pathname.split('/').at(-1),
         };
     };
-    // componentDidMount = () => {
-    //     const server = fetch("http://localhost:8000/user", {
-    //         method: "POST",
-    //         mode: "cors",
-    //     })
-    //         .then((res) => {
-    //             return res.json();
-    //         })
-    //         .then((data) => {
-    //             console.log(JSON.stringify(data));
-    //         })
-    //         .catch((err) => {
-    //             console.error(err);
-    //         });
-    //     return server;
-    // };
+
+    //BROKEN - LIKELY NEEDS TO BE ASYNC AWAIT
+    componentDidMount = () => {
+        const id = this.state.user.sub.split('|')[1]
+        fetch(`http://localhost:8000/api/user/${id}`, {
+            method: "GET",
+            mode: "cors",
+        })
+            .then((res) => {
+                return res.json();
+            })
+            .then((data) => {
+                this.setState({allData: data})
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
     componentDidUpdate = () => {
         const present = window.location.pathname.split('/').at(-1);
         if (present !== this.state.currentSelection) {
@@ -52,7 +54,7 @@ class ProjectView extends React.Component {
             return;
         }
 
-        const column = this.state.allData[this.state.currentSelection].columns[source.droppableId];
+        const column = this.state.allData.Projects[this.state.currentSelection].columns[source.droppableId];
         const newTaskIds = Array.from(column.taskIds);
         newTaskIds.splice(source.index, 1);
         newTaskIds.splice(destination.index, 0, draggableId);
@@ -63,27 +65,33 @@ class ProjectView extends React.Component {
         };
 
         const newOrder = {
-            ...this.state.allData[this.state.currentSelection],
+            ...this.state.allData.Projects[this.state.currentSelection],
             columns: {
-                ...this.state.allData[this.state.currentSelection].columns,
+                ...this.state.allData.Projects[this.state.currentSelection].columns,
                 [newColumn.id]: newColumn,
             },
         };
 
-        const newState = {
-            ...this.state.allData,
-            [this.state.currentSelection]: {
-                ...newOrder
-            }
+        const projectUpdate = {
+            ...this.state.allData.Projects,
+            ...newOrder
         }
 
+        const newState = {
+            ...this.state.allData,
+            Projects: {
+                ...projectUpdate
+            }
+        }
+        console.log(newState);
         this.setState({ allData: newState });
     };
     render() {
         return (
             <>
+                {this.state.allData ? (
                 <div className="projectView">
-                    <ProjectNav projects={Projects} />
+                    <ProjectNav projects={this.state.allData} />
                     <div className="projectSelection">
                             <DragDropContext onDragEnd={this.handleOnDragEnd}>
                                 {Object.keys(this.state.allData).map((key, index) => {
@@ -101,6 +109,11 @@ class ProjectView extends React.Component {
                             </DragDropContext>
                     </div>
                 </div>
+                ) : (
+                <div className="loaderContainer">
+                    <div className="loader"></div>
+                </div>
+                )}
             </>
         );
     }
