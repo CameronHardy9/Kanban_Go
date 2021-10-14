@@ -31,6 +31,10 @@ async function dataConnect(method, id, body) {
             await client.close();
         }
     }
+
+    if(method === "PUT") {
+        //INSERT NEW "UPSERT" LOGIC HERE
+    }
 }
 
 
