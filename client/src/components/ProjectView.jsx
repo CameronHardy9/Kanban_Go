@@ -4,6 +4,7 @@ import { DragDropContext } from "react-beautiful-dnd";
 import Projects from "./ProjectData";
 import Column from "./Column";
 import ProjectNav from "./ProjectNav";
+import HandleFetch from "./HandleFetch";
 
 class ProjectView extends React.Component {
     constructor(props) {
@@ -14,23 +15,11 @@ class ProjectView extends React.Component {
             currentSelection: window.location.pathname.split('/').at(-1),
         };
     };
-
     //BROKEN - LIKELY NEEDS TO BE ASYNC AWAIT
-    componentDidMount = () => {
-        const id = this.state.user.sub.split('|')[1]
-        fetch(`http://localhost:8000/api/user/${id}`, {
-            method: "GET",
-            mode: "cors",
-        })
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                this.setState({allData: data})
-            })
-            .catch((err) => {
-                console.error(err);
-            });
+    componentDidMount = async () => {
+            const id = this.state.user.sub.split('|')[1];
+            const result = await HandleFetch("GET", id);
+            this.setState({allData: await result});
     };
     componentDidUpdate = () => {
         const present = window.location.pathname.split('/').at(-1);
@@ -74,7 +63,7 @@ class ProjectView extends React.Component {
 
         const projectUpdate = {
             ...this.state.allData.Projects,
-            ...newOrder
+            [this.state.currentSelection]: newOrder
         }
 
         const newState = {
@@ -83,19 +72,19 @@ class ProjectView extends React.Component {
                 ...projectUpdate
             }
         }
-        console.log(newState);
         this.setState({ allData: newState });
+        const dbPUT = //ADD PUT REQUEST 
     };
     render() {
         return (
             <>
                 {this.state.allData ? (
                 <div className="projectView">
-                    <ProjectNav projects={this.state.allData} />
+                    <ProjectNav projects={this.state.allData.Projects} />
                     <div className="projectSelection">
                             <DragDropContext onDragEnd={this.handleOnDragEnd}>
-                                {Object.keys(this.state.allData).map((key, index) => {
-                                    const project = this.state.allData[key];
+                                {Object.keys(this.state.allData.Projects).map((key, index) => {
+                                    const project = this.state.allData.Projects[key];
                                     return (
                                         <Route key={index} path={`/app/${key}`}>
                                             {project.columnOrder.map((columnId) => {
