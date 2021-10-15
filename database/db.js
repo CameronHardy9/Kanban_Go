@@ -35,7 +35,8 @@ async function dataConnect(method, id, body) {
     if(method === "PUT") {
         try {
             await client.connect();
-            const result = await client.db("Kanban_Go").collection("Users").updateOne({"_id": id}, {$set: body}, {upsert: true});
+            const result = await client.db("Kanban_Go").collection("Users").updateOne({"_id": id}, {$set: body});
+            console.log(result);
         } catch (e) {
             console.error(e)
         } finally {
