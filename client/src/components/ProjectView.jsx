@@ -33,8 +33,9 @@ class ProjectView extends React.Component {
     };
     handleOnDragEnd = (result) => {
         const { destination, source, draggableId } = result;
+        const decodedSelection = decodeURIComponent(this.state.currentSelection)
 
-        if(this.state.currentSelection === "app") {
+        if(decodedSelection === "app") {
             return;
         }
         if (!destination) {
@@ -47,37 +48,80 @@ class ProjectView extends React.Component {
             return;
         }
 
-        const column = this.state.allData.Projects[this.state.currentSelection].columns[source.droppableId];
-        const newTaskIds = Array.from(column.taskIds);
-        newTaskIds.splice(source.index, 1);
-        newTaskIds.splice(destination.index, 0, draggableId);
+        const start = this.state.allData.Projects[decodedSelection].columns[source.droppableId];
+        const finish = this.state.allData.Projects[decodedSelection].columns[destination.droppableId];
+        
+        //Moving within same column
+        if(start === finish) {
+            const newTaskIds = Array.from(start.taskIds);
+            newTaskIds.splice(source.index, 1);
+            newTaskIds.splice(destination.index, 0, draggableId);
+    
+            const newColumn = {
+                ...start,
+                taskIds: newTaskIds,
+            };
+    
+            const newOrder = {
+                ...this.state.allData.Projects[decodedSelection],
+                columns: {
+                    ...this.state.allData.Projects[decodedSelection].columns,
+                    [newColumn.id]: newColumn,
+                },
+            };
+    
+            const projectUpdate = {
+                ...this.state.allData.Projects,
+                [decodedSelection]: newOrder
+            }
+    
+            const newState = {
+                ...this.state.allData,
+                Projects: {
+                    ...projectUpdate
+                }
+            }
+            HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+            this.setState({ allData: newState });
+        }
 
-        const newColumn = {
-            ...column,
-            taskIds: newTaskIds,
+        //Moving across columns - RECONSTRUCTION OF OBJECT NEEDS TO BE FIXED - REFERENCE DATABASE
+        const startTaskIds = Array.from(start.taskIds);
+        startTaskIds.splice(source.index, 1);
+        const newStart = {
+            ...start,
+            taskIds: startTaskIds,
         };
 
-        const newOrder = {
-            ...this.state.allData.Projects[this.state.currentSelection],
+        const finishTaskIds = Array.from(finish.taskIds);
+        finishTaskIds.splice(destination.index, 0, draggableId);
+        const newFinish = {
+            ...finish,
+            taskIds: finishTaskIds,
+        };
+
+        const newColumns = {
+            ...this.state.allData.Projects[decodedSelection],
             columns: {
-                ...this.state.allData.Projects[this.state.currentSelection].columns,
-                [newColumn.id]: newColumn,
+                ...this.state.allData.Projects[decodedSelection],
+                [newStart.id]: newStart,
+                [newFinish.id]: newFinish,
             },
         };
 
         const projectUpdate = {
             ...this.state.allData.Projects,
-            [this.state.currentSelection]: newOrder
-        }
+            [decodedSelection]: newColumns
+        };
 
         const newState = {
             ...this.state.allData,
             Projects: {
                 ...projectUpdate
             }
-        }
-        this.setState({ allData: newState });
+        };
         HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.setState({ allData: newState });
     };
     render() {
         return (
