@@ -24,7 +24,7 @@ async function dataConnect(method, id, body) {
         try {
             await client.connect();
             const result = await client.db("Kanban_Go").collection("Users").insertOne({"_id": id, ...body});
-            console.log(`New listing created with the following id: ${result.insertedId}`); 
+            console.log(`Created listing: ${result.insertedId}`); 
         } catch (e) {
             console.error(e)
         } finally {
@@ -33,8 +33,16 @@ async function dataConnect(method, id, body) {
     }
 
     if(method === "PUT") {
-        //INSERT NEW "UPSERT" LOGIC HERE
+        try {
+            await client.connect();
+            const result = await client.db("Kanban_Go").collection("Users").updateOne({"_id": id}, {$set: body}, {upsert: true});
+        } catch (e) {
+            console.error(e)
+        } finally {
+            await client.close();
+        }
     }
+    
 }
 
 
