@@ -2,7 +2,7 @@ import React from "react";
 import Task from "./Task";
 import { Droppable } from "react-beautiful-dnd";
 
-class Column extends React.Component {
+class Column extends React.Component { 
     render() {
         return (
             <div className="allColumns">
@@ -21,6 +21,7 @@ class Column extends React.Component {
                         </ul>
                     )}
                 </Droppable>
+                <button id="newTaskButton">Add new task</button>
             </div>
         );
     }
