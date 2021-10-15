@@ -9,7 +9,10 @@ router.get('/user/:id', async (req, res) => {
 
 router.post('/user/:id', (req, res) => {
     dataConnect(req.method, req.params.id, req.body);
-    res.send("POST Hello from Express")
+})
+
+router.put('/user/:id', (req, res) => {
+    dataConnect(req.method, req.params.id, req.body)
 })
 
 module.exports = router;
