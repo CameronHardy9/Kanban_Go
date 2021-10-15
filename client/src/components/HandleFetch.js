@@ -1,6 +1,6 @@
-async function HandleFetch(method, id, body, email) {
+async function HandleFetch(method, id, email, body)  {
     
-    if (!body && method === "PUT") {
+    if (!body && method === "POST") {
         body = {
             "_id": id,
             "User": {
@@ -9,9 +9,11 @@ async function HandleFetch(method, id, body, email) {
             "Projects": {
                 "New Project": {
                     "tasks": {
-                        "id": "task1",
-                        "task": "New Task",
-                        "details": "Insert details here..."
+                        "task1": {
+                            "id": "task1",
+                            "task": "New Task",
+                            "details": "Insert details here..."
+                        }
                     },
                     "columns": {
                         "column1": {
@@ -26,17 +28,21 @@ async function HandleFetch(method, id, body, email) {
         }
     }
     
+    try {
 
-    let response = await fetch(`http://localhost:8000/api/user/${id}`, {
-            method: `${method}`,
-            mode: "cors",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(body),
-        })
-        let data = await response.json();
-        return data;
+        let response = await fetch(`http://localhost:8000/api/user/${id}`, {
+                method: `${method}`,
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(body),
+            })
+            let data = await response.json();
+            return data;
+    } catch (e){
+        console.error(e);
+    }
 }
 
 export default HandleFetch;
