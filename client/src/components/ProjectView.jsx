@@ -1,7 +1,6 @@
 import React from "react";
 import { Route, withRouter } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
-import Projects from "./ProjectData";
 import Column from "./Column";
 import ProjectNav from "./ProjectNav";
 import HandleFetch from "./HandleFetch";
@@ -11,15 +10,20 @@ class ProjectView extends React.Component {
         super(props);
         this.state = {
             user: props.userInfo,
+            id: props.userInfo.sub.split('|')[1],
             allData: undefined,
             currentSelection: window.location.pathname.split('/').at(-1),
         };
     };
-    //BROKEN - LIKELY NEEDS TO BE ASYNC AWAIT
     componentDidMount = async () => {
-            const id = this.state.user.sub.split('|')[1];
-            const result = await HandleFetch("GET", id);
-            this.setState({allData: await result});
+            const getUser = await HandleFetch("GET", this.state.id);
+            if(!getUser) {
+                await HandleFetch("POST", this.state.id, this.state.user.email);
+                const getNewUser = await HandleFetch("GET", this.state.id);
+                this.setState({ allData: getNewUser });
+            } else {
+                this.setState({ allData: getUser });
+            }
     };
     componentDidUpdate = () => {
         const present = window.location.pathname.split('/').at(-1);
@@ -73,7 +77,7 @@ class ProjectView extends React.Component {
             }
         }
         this.setState({ allData: newState });
-        const dbPUT = //ADD PUT REQUEST 
+        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
     };
     render() {
         return (
