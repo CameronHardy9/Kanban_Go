@@ -5,7 +5,7 @@ import { Droppable } from "react-beautiful-dnd";
 class Column extends React.Component { 
     render() {
         return (
-            <div className="allColumns">
+            <>
                 <h2 className="columnTitle">{this.props.column.title}</h2>
                 <Droppable droppableId={this.props.column.id}>
                     {(provided) => (
@@ -21,8 +21,7 @@ class Column extends React.Component {
                         </ul>
                     )}
                 </Droppable>
-                <button id="newTaskButton">Add new task</button>
-            </div>
+            </>
         );
     }
 }
