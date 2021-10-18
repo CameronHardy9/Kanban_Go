@@ -16,14 +16,14 @@ class ProjectView extends React.Component {
         };
     };
     componentDidMount = async () => {
-            const getUser = await HandleFetch("GET", this.state.id);
-            if(!getUser) {
-                await HandleFetch("POST", this.state.id, this.state.user.email);
-                const getNewUser = await HandleFetch("GET", this.state.id);
-                this.setState({ allData: getNewUser });
-            } else {
-                this.setState({ allData: getUser });
-            }
+        const getUser = await HandleFetch("GET", this.state.id);
+        if(!getUser) {
+            await HandleFetch("POST", this.state.id, this.state.user.email);
+            const getNewUser = await HandleFetch("GET", this.state.id);
+            this.setState({ allData: getNewUser });
+        } else {
+            this.setState({ allData: getUser });
+        }
     };
     componentDidUpdate = () => {
         const present = window.location.pathname.split('/').at(-1);
@@ -83,46 +83,45 @@ class ProjectView extends React.Component {
             }
             HandleFetch("PUT", this.state.id, this.state.user.email, newState);
             this.setState({ allData: newState });
-        } 
-        // else {
-        //     //Moving across columns - RECONSTRUCTION OF OBJECT NEEDS TO BE FIXED - REFERENCE DATABASE
-        //     const startTaskIds = Array.from(start.taskIds);
-        //     startTaskIds.splice(source.index, 1);
-        //     const newStart = {
-        //         ...start,
-        //         taskIds: startTaskIds,
-        //     };
+        } else {
+            //Moving across columns
+            const startTaskIds = Array.from(start.taskIds);
+            startTaskIds.splice(source.index, 1);
+            const newStart = {
+                ...start,
+                taskIds: startTaskIds,
+            };
     
-        //     const finishTaskIds = Array.from(finish.taskIds);
-        //     finishTaskIds.splice(destination.index, 0, draggableId);
-        //     const newFinish = {
-        //         ...finish,
-        //         taskIds: finishTaskIds,
-        //     };
+            const finishTaskIds = Array.from(finish.taskIds);
+            finishTaskIds.splice(destination.index, 0, draggableId);
+            const newFinish = {
+                ...finish,
+                taskIds: finishTaskIds,
+            };
     
-        //     const newColumns = {
-        //         ...this.state.allData.Projects[decodedSelection],
-        //         columns: {
-        //             ...this.state.allData.Projects[decodedSelection],
-        //             [newStart.id]: newStart,
-        //             [newFinish.id]: newFinish,
-        //         },
-        //     };
+            const newColumns = {
+                ...this.state.allData.Projects[decodedSelection],
+                columns: {
+                    ...this.state.allData.Projects[decodedSelection].columns,
+                    [newStart.id]: newStart,
+                    [newFinish.id]: newFinish,
+                },
+            };
     
-        //     const projectUpdate = {
-        //         ...this.state.allData.Projects,
-        //         [decodedSelection]: newColumns
-        //     };
+            const projectUpdate = {
+                ...this.state.allData.Projects,
+                [decodedSelection]: newColumns
+            };
     
-        //     const newState = {
-        //         ...this.state.allData,
-        //         Projects: {
-        //             ...projectUpdate
-        //         }
-        //     };
-        //     HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        //     this.setState({ allData: newState });
-        // }
+            const newState = {
+                ...this.state.allData,
+                Projects: {
+                    ...projectUpdate
+                }
+            };
+            HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+            this.setState({ allData: newState });
+        }
     };
     render() {
         return (
