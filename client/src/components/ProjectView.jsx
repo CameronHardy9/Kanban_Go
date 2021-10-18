@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, withRouter } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
+import uniqid from "uniqid";
 import Column from "./Column";
 import ProjectNav from "./ProjectNav";
 import HandleFetch from "./HandleFetch";
@@ -123,6 +124,42 @@ class ProjectView extends React.Component {
             this.setState({ allData: newState });
         }
     };
+    handleAddTask = (e) => {
+        const column = e.target.previousSibling.dataset.rbdDroppableId;
+        const decodedSelection = decodeURIComponent(this.state.currentSelection);
+        const id = uniqid();
+
+        const newState = {
+            ...this.state.allData,
+            Projects: {
+                ...this.state.allData.Projects,
+                [decodedSelection]: {
+                    ...this.state.allData.Projects.decodedSelection,
+                    tasks: {
+                        ...this.state.allData.Projects.decodedSelection.tasks,
+                        [id]: {
+                            id: [id],
+                            task: "New task...",
+                            details: "Add details here..." 
+                        }
+                    },
+                    columns: {
+                        ...this.state.allData.Projects.decodedSelection.columns,
+                        [column]: {
+                            ...this.state.allData.Projects.decodedSelection.columns.column,
+                            taskIds: [
+                                ...this.state.allData.Projects.decodedSelection.columns.column.taskIds,
+                                id
+                            ]
+                        }
+                    }
+                }
+            }
+
+        };
+
+        console.log(newState);
+    };
     render() {
         return (
             <>
@@ -138,7 +175,12 @@ class ProjectView extends React.Component {
                                             {project.columnOrder.map((columnId) => {
                                                 const column = project.columns[columnId];
                                                 const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
-                                                return(<Column key={columnId} column={column} tasks={tasks} />)
+                                                return(
+                                                <div className="allColumns">
+                                                    <Column key={columnId} column={column} tasks={tasks} />
+                                                    <button id="newTaskButton" onClick={this.handleAddTask}>Add new task</button>
+                                                </div>
+                                                )
                                             })}
                                         </Route>
                                     );
