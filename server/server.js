@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors')
 const {join} = require('path');
+const { MongoClient } = require('mongodb');
 const api = require('../routes/api');
 const projects = require('../routes/projects');
 require('dotenv').config();
@@ -20,7 +21,14 @@ app.use(express.static(join(__dirname, '../client/build')));
 app.use('/app', projects);
 app.use('/api', api);
 
-app.listen(port, () => {
-    console.log('Listening on port', port);
-})
+MongoClient.connect(process.env.MONGO_DB_URI, {promiseLibrary: Promise}, (err, client) => {
+    if(err) {
+        console.error(err)
+    }
+    app.locals.client = client;
+    app.listen(port, () => {
+        console.log('Listening on port', port);
+    });
+});
+
 
