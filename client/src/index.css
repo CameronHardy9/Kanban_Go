@@ -163,6 +163,8 @@ html {
 
 .dragItems {
     list-style-type: none;
+    min-height: 50px;
+    min-width: 240px;
     padding: 0;
 }
 
