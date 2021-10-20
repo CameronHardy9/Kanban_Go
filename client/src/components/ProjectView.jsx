@@ -125,7 +125,7 @@ class ProjectView extends React.Component {
         }
     };
     handleAddTask = (e) => {
-        const column = e.target.previousSibling.dataset.rbdDroppableId;
+        const column = e.target.parentElement.previousSibling.dataset.rbdDroppableId;
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
         const id = uniqid();
 
@@ -134,21 +134,21 @@ class ProjectView extends React.Component {
             Projects: {
                 ...this.state.allData.Projects,
                 [decodedSelection]: {
-                    ...this.state.allData.Projects.decodedSelection,
+                    ...this.state.allData.Projects[decodedSelection],
                     tasks: {
-                        ...this.state.allData.Projects.decodedSelection.tasks,
+                        ...this.state.allData.Projects[decodedSelection].tasks,
                         [id]: {
-                            id: [id],
+                            id: id,
                             task: "New task...",
                             details: "Add details here..." 
                         }
                     },
                     columns: {
-                        ...this.state.allData.Projects.decodedSelection.columns,
+                        ...this.state.allData.Projects[decodedSelection].columns,
                         [column]: {
-                            ...this.state.allData.Projects.decodedSelection.columns.column,
+                            ...this.state.allData.Projects[decodedSelection].columns[column],
                             taskIds: [
-                                ...this.state.allData.Projects.decodedSelection.columns.column.taskIds,
+                                ...this.state.allData.Projects[decodedSelection].columns[column].taskIds,
                                 id
                             ]
                         }
@@ -157,8 +157,8 @@ class ProjectView extends React.Component {
             }
 
         };
-
-        console.log(newState);
+        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.setState({ allData: newState });
     };
     render() {
         return (
@@ -178,7 +178,7 @@ class ProjectView extends React.Component {
                                                 return(
                                                 <div className="allColumns">
                                                     <Column key={columnId} column={column} tasks={tasks} />
-                                                    <button id="newTaskButton" onClick={this.handleAddTask}>Add new task</button>
+                                                    <button id="newTaskButton" onClick={this.handleAddTask}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
                                                 </div>
                                                 )
                                             })}
