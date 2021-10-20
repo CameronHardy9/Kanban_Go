@@ -21,7 +21,7 @@ class ProjectNav extends React.Component {
                                 </li>
                             );
                         })}
-                        <li><button id="newProjectButton" onClick={this.handleNewProject}>Add new project</button></li>
+                        <li><button className="buttons" onClick={this.handleNewProject}>Add new project</button></li>
                     </ul>
                 </details>
             </div>
