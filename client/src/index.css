@@ -116,29 +116,18 @@ html {
     color: black;
 }
 
-#newProjectButton {
+.buttons {
     border: none;
     background-color: transparent;
     color: var(--light-5);
     padding: 0;
 }
 
-#newProjectButton:active {
+.buttons:hover {
     color: black;
 }
 
-#newTaskButton {
-    border: none;
-    background-color: transparent;
-    color: var(--light-5);
-    padding: 0;
-}
-
-#newTaskButton:hover {
-    color: black;
-}
-
-#newTaskButton:active {
+.buttons:active {
     color: var(--light-5);
 }
 
@@ -172,7 +161,7 @@ html {
     padding: 0;
 }
 
-.dragItems > li {
+.task {
     border: 1px solid var(--light-3);
     padding: 10px;
     width: 200px;
