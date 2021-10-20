@@ -124,8 +124,7 @@ class ProjectView extends React.Component {
             this.setState({ allData: newState });
         }
     };
-    handleAddTask = (e) => {
-        const column = e.target.parentElement.previousSibling.dataset.rbdDroppableId;
+    handleAddTask = (column) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
         const id = uniqid();
 
@@ -172,6 +171,9 @@ class ProjectView extends React.Component {
         HandleFetch("PUT", this.state.id, this.state.user.email, newState);
         this.setState({ allData: newState });
     }
+    handleContentChange = (e) => {
+        console.log(e.target.textContent)
+    }
     render() {
         return (
             <>
@@ -189,8 +191,8 @@ class ProjectView extends React.Component {
                                                 const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
                                                 return(
                                                 <div className="allColumns">
-                                                    <Column key={columnId} column={column} tasks={tasks} handleDeleteTask={this.handleDeleteTask}/>
-                                                    <button className="buttons" onClick={this.handleAddTask}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
+                                                    <Column key={columnId} column={column} tasks={tasks} handleDeleteTask={this.handleDeleteTask} handleContentChange={this.handleContentChange}/>
+                                                    <button className="buttons" onClick={() => this.handleAddTask(column.id)}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
                                                 </div>
                                                 )
                                             })}
