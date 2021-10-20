@@ -134,8 +134,12 @@ html {
     padding: 0;
 }
 
-#newTaskButton:active {
+#newTaskButton:hover {
     color: black;
+}
+
+#newTaskButton:active {
+    color: var(--light-5);
 }
 
 .projectSelection {
