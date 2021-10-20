@@ -160,8 +160,17 @@ class ProjectView extends React.Component {
         HandleFetch("PUT", this.state.id, this.state.user.email, newState);
         this.setState({ allData: newState });
     };
-    handleDeleteTask = () => {
-        console.log("Delete Task")
+    handleDeleteTask = (task, column) => {
+        const decodedSelection = decodeURIComponent(this.state.currentSelection);
+        let newState = {...this.state.allData};
+        let taskSelect = newState.Projects[decodedSelection].tasks;
+        let columnSelect = newState.Projects[decodedSelection].columns[column];
+        
+        columnSelect.taskIds.splice(columnSelect.taskIds.indexOf(task), 1);
+        delete taskSelect[task];
+        
+        //HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.setState({ allData: newState });
     }
     render() {
         return (
