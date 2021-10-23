@@ -15,7 +15,7 @@ class Column extends React.Component {
                             {...provided.droppableProps}
                         >
                             {this.props.tasks.map((task, index) => (
-                                <Task key={task.id} column={this.props.column} task={task} index={index} handleDeleteTask={this.props.handleDeleteTask} handleContentChange={this.props.handleContentChange} />
+                                <Task key={task.id} column={this.props.column} task={task} index={index} handleDeleteTask={this.props.handleDeleteTask} handleTaskContentChange={this.props.handleTaskContentChange} />
                             ))}
                             {provided.placeholder}
                         </ul>
