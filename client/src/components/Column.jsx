@@ -6,7 +6,7 @@ class Column extends React.Component {
     render() {
         return (
             <>
-                <h2 className="columnTitle">{this.props.column.title}</h2>
+                <h2 className="columnTitle" contentEditable suppressContentEditableWarning onBlur={(e) => this.props.handleColumnContentChange(e, this.props.column.id)}>{this.props.column.title}</h2>
                 <Droppable droppableId={this.props.column.id}>
                     {(provided) => (
                         <ul
