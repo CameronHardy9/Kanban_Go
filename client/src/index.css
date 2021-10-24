@@ -215,7 +215,7 @@ html {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    border: 3px solid var(--light-5);
+    border: 2px solid var(--light-5);
     animation:
       s10-1 0.8s infinite linear alternate,
       s10-2 1.6s infinite linear;
