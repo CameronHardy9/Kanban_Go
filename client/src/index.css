@@ -53,6 +53,22 @@ html {
     text-decoration: none;
 }
 
+.save {
+    margin-right: 30px;
+    display: flex;
+    align-items: center;
+}
+
+.saveText {
+    margin-right: 5px
+}
+
+.save > svg {
+    width: 15px;
+    height: 15px;
+    color: rgb(24, 196, 24);
+}
+
 .loggedInAs {
     margin-right: 10px;
 }
@@ -124,6 +140,7 @@ html {
 }
 
 .buttons:hover {
+    cursor: pointer;
     color: black;
 }
 
@@ -186,8 +203,25 @@ html {
     animation:
       s10-1 0.8s infinite linear alternate,
       s10-2 1.6s infinite linear;
-  }
-  @keyframes s10-1{
+}
+
+.saveLoaderContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.saveLoader {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 3px solid var(--light-5);
+    animation:
+      s10-1 0.8s infinite linear alternate,
+      s10-2 1.6s infinite linear;
+}
+
+@keyframes s10-1{
      0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
      12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
      25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
@@ -195,10 +229,10 @@ html {
      62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
      75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
      100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
-  }
-  @keyframes s10-2{ 
+}
+@keyframes s10-2{ 
     0%    {transform:scaleY(1)  rotate(0deg)}
     49.99%{transform:scaleY(1)  rotate(135deg)}
     50%   {transform:scaleY(-1) rotate(0deg)}
     100%  {transform:scaleY(-1) rotate(-135deg)}
-  }
+}
