@@ -10,17 +10,24 @@ function App() {
     const { user } = useAuth0();
 
     const [userInfo, setUserInfo] = useState(undefined);
+    const [contentSaved, setContentSaved] = useState(true);
     useEffect(() => {
         if (user) {
             storage.set("KanbanGoAuth", user);
         }
         setUserInfo(storage.get("KanbanGoAuth"));
     }, [user]);
+
+    const handleContentUpdate = () => {
+
+    }
+
     return (
         <>
             {userInfo ? (
                 <NavBar
                     userInfo={storage.get("KanbanGoAuth")}
+                    contentSaved={contentSaved}
                 />
             ) : (
                 <NavBar />
@@ -31,7 +38,7 @@ function App() {
                 </Route>
                 {userInfo ? (
                     <Route path="/app">
-                        <ProjectView userInfo={storage.get("KanbanGoAuth")} />
+                        <ProjectView userInfo={storage.get("KanbanGoAuth")} contentSaved={handleContentUpdate} />
                     </Route>
                 ) : (
                     <div className="loaderContainer">
