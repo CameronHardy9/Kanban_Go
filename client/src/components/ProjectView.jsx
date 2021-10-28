@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, withRouter } from "react-router-dom";
 import { DragDropContext } from "react-beautiful-dnd";
+import _ from "lodash";
 import uniqid from "uniqid";
 import Column from "./Column";
 import ProjectNav from "./ProjectNav";
@@ -30,6 +31,21 @@ class ProjectView extends React.Component {
         const present = window.location.pathname.split('/').at(-1);
         if (present !== this.state.currentSelection) {
             this.setState({currentSelection: present})
+        }
+
+        //SAVE STATUS CHECKER - NOT WORKING - MAY NEED TO CHANGE TO COUNTER
+        if (this.state.allData) {
+            async function checkSave (id, data) {
+                console.log("checkSave")
+                const getUser = await HandleFetch("GET", id);
+                if (_.isEqual(getUser, data)) {
+                    console.log("Equal");
+                } else {
+                    console.log("Not Equal");
+                    checkSave (id, data);
+                }
+            }
+            checkSave(this.state.id, this.state.allData)
         }
     };
     handleOnDragEnd = (result) => {
@@ -226,6 +242,28 @@ class ProjectView extends React.Component {
         HandleFetch("PUT", this.state.id, this.state.user.email, newState);
         this.setState({ allData: newState });
     };
+    handleDeleteColumn = (columnId) => {
+        const decodedSelection = decodeURIComponent(this.state.currentSelection);
+        let newState = {...this.state.allData};
+        let allTasks = newState.Projects[decodedSelection].tasks
+        let selectedTaskIds = newState.Projects[decodedSelection].columns[columnId].taskIds;
+        let columnOrder = newState.Projects[decodedSelection].columnOrder;
+        let columns = newState.Projects[decodedSelection].columns;
+
+        for (const entry in allTasks) {
+            if (selectedTaskIds.includes(entry)) {
+                delete allTasks[entry];
+            }
+        }
+
+        columnOrder.splice(columnId, 1);
+        delete columns[columnId]
+
+        //CURRENTLY WORKING - UNCOMMENT ITEMS BELOW TO START USING
+        //HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        //this.setState({ allData: newState });
+        console.log("New State: ", newState);
+    };
     render() {
         return (
             <>
@@ -243,7 +281,7 @@ class ProjectView extends React.Component {
                                                 const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
                                                 return(
                                                 <div className="allColumns">
-                                                    <Column key={columnId} column={column} tasks={tasks} handleDeleteTask={this.handleDeleteTask} handleColumnContentChange={this.handleColumnContentChange} handleTaskContentChange={this.handleTaskContentChange}/>
+                                                    <Column key={columnId} column={column} tasks={tasks} handleDeleteColumn={this.handleDeleteColumn} handleDeleteTask={this.handleDeleteTask} handleColumnContentChange={this.handleColumnContentChange} handleTaskContentChange={this.handleTaskContentChange}/>
                                                     <button className="buttons" onClick={() => this.handleAddTask(column.id)}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
                                                 </div>
                                                 )
