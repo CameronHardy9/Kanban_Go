@@ -140,6 +140,37 @@ class ProjectView extends React.Component {
             this.setState({ allData: newState });
         }
     };
+    handleNewProject = () => {
+        const projectName = prompt("Give your new project a name:");
+        const taskId = uniqid();
+        const columnId = uniqid();
+
+        const newState = {
+            ...this.state.allData,
+            Projects: {
+                ...this.state.allData.Projects,
+                [projectName]: {
+                    tasks: {
+                        [taskId]: {
+                            id: taskId,
+                            task: "New Task",
+                            details: "Add details here..."
+                        }
+                    },
+                    columns: {
+                        [columnId]: {
+                            id: columnId,
+                            title: "New Column",
+                            taskIds: [taskId]
+                        }
+                    },
+                    columnOrder: [columnId]
+                }
+            }
+        }
+        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.setState({ allData: newState });
+    }
     handleAddTask = (column) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
         const id = uniqid();
@@ -269,7 +300,7 @@ class ProjectView extends React.Component {
             <>
                 {this.state.allData ? (
                 <div className="projectView">
-                    <ProjectNav projects={this.state.allData.Projects} />
+                    <ProjectNav projects={this.state.allData.Projects} handleNewProject={this.handleNewProject} />
                     <div className="projectSelection">
                             <DragDropContext onDragEnd={this.handleOnDragEnd}>
                                 {Object.keys(this.state.allData.Projects).map((key, index) => {
