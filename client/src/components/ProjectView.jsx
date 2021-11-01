@@ -140,36 +140,44 @@ class ProjectView extends React.Component {
             this.setState({ allData: newState });
         }
     };
+
+    //WORKS BUT ONLY ADDS - NEEDS CHECK FOR DUPLICATE PROJECT NAMES
     handleNewProject = () => {
-        const projectName = prompt("Give your new project a name:");
+        const projectName = prompt("Give your new project a name.\nCan only include the following characters:\n[ A-Z, a-z, 0-9, _ , - ].");
         const taskId = uniqid();
         const columnId = uniqid();
+        const regex1 = /[^\w -]/g;
+        const regex2 = /\S/g;
 
-        const newState = {
-            ...this.state.allData,
-            Projects: {
-                ...this.state.allData.Projects,
-                [projectName]: {
-                    tasks: {
-                        [taskId]: {
-                            id: taskId,
-                            task: "New Task",
-                            details: "Add details here..."
-                        }
-                    },
-                    columns: {
-                        [columnId]: {
-                            id: columnId,
-                            title: "New Column",
-                            taskIds: [taskId]
-                        }
-                    },
-                    columnOrder: [columnId]
+        if(projectName && !(projectName.match(regex1)) && !!(projectName.match(regex2))) {
+            const newState = {
+                ...this.state.allData,
+                Projects: {
+                    ...this.state.allData.Projects,
+                    [projectName]: {
+                        tasks: {
+                            [taskId]: {
+                                id: taskId,
+                                task: "New Task",
+                                details: "Add details here..."
+                            }
+                        },
+                        columns: {
+                            [columnId]: {
+                                id: columnId,
+                                title: "New Column",
+                                taskIds: [taskId]
+                            }
+                        },
+                        columnOrder: [columnId]
+                    }
                 }
             }
+            HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+            this.setState({ allData: newState });
+        } else {
+            alert("Please try again with valid input!");
         }
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
     }
     handleAddTask = (column) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
