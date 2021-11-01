@@ -12,7 +12,7 @@ async function HandleFetch(method, id, email, body)  {
                         "task1": {
                             "id": "task1",
                             "task": "New Task",
-                            "details": "Insert details here..."
+                            "details": "Add details here..."
                         }
                     },
                     "columns": {
