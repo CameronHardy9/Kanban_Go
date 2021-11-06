@@ -132,6 +132,12 @@ html {
     color: black;
 }
 
+.deleteProject svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+}
+
 .buttons {
     border: none;
     background-color: transparent;
