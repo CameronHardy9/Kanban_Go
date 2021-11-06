@@ -141,20 +141,26 @@ class ProjectView extends React.Component {
         }
     };
 
-    //WORKS BUT ONLY ADDS - NEEDS CHECK FOR DUPLICATE PROJECT NAMES
+    //WORKS BUT ONLY ADDS
     handleNewProject = () => {
-        const projectName = prompt("Give your new project a name.\nCan only include the following characters:\n[ A-Z, a-z, 0-9, _ , - ].");
+        const newProjectName = prompt("Give your new project a name.\n\nCan only include the following characters:\n[ A-Z, a-z, 0-9, _ , - ].");
         const taskId = uniqid();
         const columnId = uniqid();
         const regex1 = /[^\w -]/g;
         const regex2 = /\S/g;
+        const currentProjects = _.keysIn(this.state.allData.Projects)
+        
+        if(currentProjects.includes(newProjectName)) {
+            alert("Project name already exists!\n\nPlease choose a unique name.");
+            return;
+        }
 
-        if(projectName && !(projectName.match(regex1)) && !!(projectName.match(regex2))) {
+        if(newProjectName && !(newProjectName.match(regex1)) && !!(newProjectName.match(regex2))) {
             const newState = {
                 ...this.state.allData,
                 Projects: {
                     ...this.state.allData.Projects,
-                    [projectName]: {
+                    [newProjectName]: {
                         tasks: {
                             [taskId]: {
                                 id: taskId,
