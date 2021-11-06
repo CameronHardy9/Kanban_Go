@@ -34,19 +34,19 @@ class ProjectView extends React.Component {
         }
 
         //SAVE STATUS CHECKER - NOT WORKING - MAY NEED TO CHANGE TO COUNTER
-        if (this.state.allData) {
-            async function checkSave (id, data) {
-                console.log("checkSave")
-                const getUser = await HandleFetch("GET", id);
-                if (_.isEqual(getUser, data)) {
-                    console.log("Equal");
-                } else {
-                    console.log("Not Equal");
-                    checkSave (id, data);
-                }
-            }
-            checkSave(this.state.id, this.state.allData)
-        }
+        // if (this.state.allData) {
+        //     async function checkSave (id, data) {
+        //         console.log("checkSave")
+        //         const getUser = await HandleFetch("GET", id);
+        //         if (_.isEqual(getUser, data)) {
+        //             console.log("Equal");
+        //         } else {
+        //             console.log("Not Equal");
+        //             checkSave (id, data);
+        //         }
+        //     }
+        //     checkSave(this.state.id, this.state.allData)
+        // }
     };
     handleOnDragEnd = (result) => {
         const { destination, source, draggableId } = result;
@@ -140,8 +140,15 @@ class ProjectView extends React.Component {
             this.setState({ allData: newState });
         }
     };
+    handleDeleteProject = () => {
+        const decodedSelection = decodeURIComponent(this.state.currentSelection);
+        const newState = {...this.state.allData};
 
-    //WORKS BUT ONLY ADDS
+        delete newState.Projects[decodedSelection];
+
+        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.setState({ allData: newState });
+    }
     handleNewProject = () => {
         const newProjectName = prompt("Give your new project a name.\n\nCan only include the following characters:\n[ A-Z, a-z, 0-9, _ , - ].");
         const taskId = uniqid();
@@ -314,7 +321,7 @@ class ProjectView extends React.Component {
             <>
                 {this.state.allData ? (
                 <div className="projectView">
-                    <ProjectNav projects={this.state.allData.Projects} handleNewProject={this.handleNewProject} />
+                    <ProjectNav projects={this.state.allData.Projects} handleNewProject={this.handleNewProject} handleDeleteProject={this.handleDeleteProject} />
                     <div className="projectSelection">
                             <DragDropContext onDragEnd={this.handleOnDragEnd}>
                                 {Object.keys(this.state.allData.Projects).map((key, index) => {
