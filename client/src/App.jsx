@@ -36,15 +36,15 @@ function App() {
                 <Route exact path="/">
                     {userInfo ? <Redirect to="/app" /> : <Home />}
                 </Route>
-                {userInfo ? (
-                    <Route path="/app">
+                <Route path="/app">
+                    {userInfo ? (
                         <ProjectView userInfo={storage.get("KanbanGoAuth")} contentSaved={handleContentUpdate} />
-                    </Route>
-                ) : (
-                    <div className="loaderContainer">
-                        <div className="loader"></div>
-                    </div>
-                )}
+                        ) : (
+                        <div className="loaderContainer">
+                            <div className="loader"></div>
+                        </div>
+                    )}
+                </Route>
             </Switch>
         </>
     );
