@@ -308,13 +308,11 @@ class ProjectView extends React.Component {
             }
         }
 
-        columnOrder.splice(columnId, 1);
+        columnOrder.splice(columnOrder.indexOf(columnId), 1);
         delete columns[columnId]
 
-        //CURRENTLY WORKING - UNCOMMENT ITEMS BELOW TO START USING
-        //HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        //this.setState({ allData: newState });
-        console.log("New State: ", newState);
+        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.setState({ allData: newState });
     };
     render() {
         return (
