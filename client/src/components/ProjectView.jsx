@@ -140,11 +140,10 @@ class ProjectView extends React.Component {
             this.setState({ allData: newState });
         }
     };
-    handleDeleteProject = () => {
-        const decodedSelection = decodeURIComponent(this.state.currentSelection);
+    handleDeleteProject = (project) => {
         const newState = {...this.state.allData};
 
-        delete newState.Projects[decodedSelection];
+        delete newState.Projects[project];
 
         HandleFetch("PUT", this.state.id, this.state.user.email, newState);
         this.setState({ allData: newState });
