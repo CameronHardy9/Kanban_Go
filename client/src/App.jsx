@@ -10,7 +10,8 @@ function App() {
     const { user } = useAuth0();
 
     const [userInfo, setUserInfo] = useState(undefined);
-    const [contentSaved, setContentSaved] = useState(true);
+    const [saveQueue, setSaveQueue] = useState(0);
+
     useEffect(() => {
         if (user) {
             storage.set("KanbanGoAuth", user);
@@ -18,16 +19,22 @@ function App() {
         setUserInfo(storage.get("KanbanGoAuth"));
     }, [user]);
 
-    const handleContentUpdate = () => {
-
-    }
+    const handleUserUpdate = (status) => {
+        if (status === 0) {
+            setSaveQueue(saveQueue + 1)
+        } else if (status > 0) {
+            setSaveQueue(saveQueue - 1)
+        } else {
+            console.error("Something went wrong while saving changes.")
+        }
+    };
 
     return (
         <>
             {userInfo ? (
                 <NavBar
                     userInfo={storage.get("KanbanGoAuth")}
-                    contentSaved={contentSaved}
+                    contentSaved={saveQueue}
                 />
             ) : (
                 <NavBar />
@@ -38,7 +45,7 @@ function App() {
                 </Route>
                 <Route path="/app">
                     {userInfo ? (
-                        <ProjectView userInfo={storage.get("KanbanGoAuth")} contentSaved={handleContentUpdate} />
+                        <ProjectView userInfo={storage.get("KanbanGoAuth")} update={handleUserUpdate} />
                         ) : (
                         <div className="loaderContainer">
                             <div className="loader"></div>
