@@ -48,6 +48,12 @@ class ProjectView extends React.Component {
         //     checkSave(this.state.id, this.state.allData)
         // }
     };
+    handleUserUpdate = async (newState) => {
+        this.props.update(0)
+        const result = await HandleFetch("PUT", this.state.id, this.state.user.email, newState);
+        this.props.update(result.modifiedCount)
+        this.setState({ allData: newState });
+    };
     handleOnDragEnd = (result) => {
         const { destination, source, draggableId } = result;
         const decodedSelection = decodeURIComponent(this.state.currentSelection)
@@ -98,8 +104,7 @@ class ProjectView extends React.Component {
                     ...projectUpdate
                 }
             }
-            HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-            this.setState({ allData: newState });
+            this.handleUserUpdate(newState);
         } else {
             //Moving across columns
             const startTaskIds = Array.from(start.taskIds);
@@ -136,8 +141,7 @@ class ProjectView extends React.Component {
                     ...projectUpdate
                 }
             };
-            HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-            this.setState({ allData: newState });
+            this.handleUserUpdate(newState);
         }
     };
     handleDeleteProject = (project) => {
@@ -145,8 +149,7 @@ class ProjectView extends React.Component {
 
         delete newState.Projects[project];
 
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
+    this.handleUserUpdate(newState);
     }
     handleNewProject = () => {
         const newProjectName = prompt("Give your new project a name.\n\nCan only include the following characters:\n[ A-Z, a-z, 0-9, _ , - ].");
@@ -185,8 +188,7 @@ class ProjectView extends React.Component {
                     }
                 }
             }
-            HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-            this.setState({ allData: newState });
+            this.handleUserUpdate(newState);
         } else {
             alert("Please try again with valid input!");
         }
@@ -223,8 +225,7 @@ class ProjectView extends React.Component {
             }
 
         };
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
+    this.handleUserUpdate(newState);
     };
     handleDeleteTask = (task, column) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
@@ -235,8 +236,7 @@ class ProjectView extends React.Component {
         columnSelect.taskIds.splice(columnSelect.taskIds.indexOf(task), 1);
         delete taskSelect[task];
         
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
+    this.handleUserUpdate(newState);
     }
     handleTaskContentChange = (e) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
@@ -263,8 +263,7 @@ class ProjectView extends React.Component {
 
         };
 
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
+    this.handleUserUpdate(newState);
     };
     handleColumnContentChange = (e, id) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
@@ -290,8 +289,7 @@ class ProjectView extends React.Component {
             }
         };
 
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
+    this.handleUserUpdate(newState);
     };
     handleDeleteColumn = (columnId) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
@@ -310,8 +308,7 @@ class ProjectView extends React.Component {
         columnOrder.splice(columnOrder.indexOf(columnId), 1);
         delete columns[columnId]
 
-        HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.setState({ allData: newState });
+    this.handleUserUpdate(newState);
     };
     render() {
         return (
