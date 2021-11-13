@@ -21,7 +21,7 @@ router.post('/user/:id', async (req, res) => {
 
 router.put('/user/:id', async (req, res) => {
     try {
-        const result = req.app.locals.client.db("Kanban_Go").collection("Users").updateOne({"_id": req.params.id}, {$set: req.body});
+        const result = await req.app.locals.client.db("Kanban_Go").collection("Users").updateOne({"_id": req.params.id}, {$set: req.body});
         res.send(result);
     } catch (e) {
         console.error(e)
