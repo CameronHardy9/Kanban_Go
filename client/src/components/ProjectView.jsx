@@ -52,7 +52,9 @@ class ProjectView extends React.Component {
         this.props.update(0)
         this.setState({ allData: newState });
         const result = await HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        this.props.update(result.modifiedCount)
+        if (result.modifiedCount) {
+            this.props.update(result.modifiedCount);
+        }
     };
     handleOnDragEnd = (result) => {
         const { destination, source, draggableId } = result;
