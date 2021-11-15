@@ -280,6 +280,41 @@ class ProjectView extends React.Component {
 
     this.handleUserUpdate(newState);
     };
+    handleAddColumn = () => {
+        const decodedSelection = decodeURIComponent(this.state.currentSelection);
+        const taskId = uniqid();
+        const columnId = uniqid();
+
+
+        const newState = {
+            ...this.state.allData,
+            Projects: {
+                ...this.state.allData.Projects,
+                [decodedSelection]: {
+                    ...this.state.allData.Projects[decodedSelection],
+                    tasks: {
+                        ...this.state.allData.Projects[decodedSelection].tasks,
+                        [taskId]: {
+                            id: taskId,
+                            task: "New task...",
+                            details: "Add details here..." 
+                        }
+                    },
+                    columns: {
+                        ...this.state.allData.Projects[decodedSelection].columns,
+                        [columnId]: {
+                            id: columnId,
+                            title: "New Column",
+                            taskIds: [taskId]
+                        }
+                    },
+                    columnOrder: [...this.state.allData.Projects[decodedSelection].columnOrder, columnId]
+                }
+            }
+        };
+        
+    this.handleUserUpdate(newState);
+    };
     handleDeleteColumn = (columnId) => {
         const decodedSelection = decodeURIComponent(this.state.currentSelection);
         let newState = {...this.state.allData};
@@ -315,12 +350,12 @@ class ProjectView extends React.Component {
                                                 const column = project.columns[columnId];
                                                 const tasks = column.taskIds.map((taskId) => project.tasks[taskId]);
                                                 return(
-                                                <div key={columnId} className="allColumns">
-                                                    <Column column={column} tasks={tasks} handleDeleteColumn={this.handleDeleteColumn} handleDeleteTask={this.handleDeleteTask} handleColumnContentChange={this.handleColumnContentChange} handleTaskContentChange={this.handleTaskContentChange}/>
-                                                    <button className="buttons" onClick={() => this.handleAddTask(column.id)}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
-                                                </div>
-                                                )
-                                            })}
+                                                    <div key={columnId} className="allColumns">
+                                                        <Column column={column} tasks={tasks} handleDeleteColumn={this.handleDeleteColumn} handleDeleteTask={this.handleDeleteTask} handleColumnContentChange={this.handleColumnContentChange} handleTaskContentChange={this.handleTaskContentChange}/>
+                                                        <button className="buttons" onClick={() => this.handleAddTask(column.id)}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
+                                                    </div>
+                                                )})}
+                                                <button className="buttons" onClick={() => this.handleAddColumn()}><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-plus-square"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg></button>
                                         </Route>
                                     );
                                 })}
