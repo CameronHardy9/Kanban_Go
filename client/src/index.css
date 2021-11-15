@@ -227,6 +227,10 @@ html {
       s10-2 1.6s infinite linear;
 }
 
+.screenSizeWarning {
+    visibility: hidden;
+}
+
 @keyframes s10-1{
      0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
      12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
@@ -241,4 +245,17 @@ html {
     49.99%{transform:scaleY(1)  rotate(135deg)}
     50%   {transform:scaleY(-1) rotate(0deg)}
     100%  {transform:scaleY(-1) rotate(-135deg)}
+}
+
+@media only screen and (max-width: 700px) {
+    * {
+        visibility: hidden;
+    }
+
+    .screenSizeWarning {
+        visibility: visible;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+    }
 }

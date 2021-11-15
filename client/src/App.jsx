@@ -53,6 +53,7 @@ function App() {
                     )}
                 </Route>
             </Switch>
+            <h1 className="screenSizeWarning">This application currently only supports a screen size wider than 700px.</h1>
         </>
     );
 }
