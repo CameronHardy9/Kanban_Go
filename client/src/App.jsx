@@ -20,9 +20,9 @@ function App() {
     }, [user]);
 
     const handleUserUpdate = (status) => {
-        if (status === 0) {
+        if (status === false) {
             setSaveQueue(saveQueue + 1)
-        } else if (status > 0) {
+        } else if (status === true) {
             setSaveQueue(saveQueue - 1)
         } else {
             console.error("Something went wrong while saving changes.")
