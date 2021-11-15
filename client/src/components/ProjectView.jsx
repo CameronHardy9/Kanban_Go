@@ -32,28 +32,15 @@ class ProjectView extends React.Component {
         if (present !== this.state.currentSelection) {
             this.setState({currentSelection: present})
         }
-
-        //SAVE STATUS CHECKER - NOT WORKING - MAY NEED TO CHANGE TO COUNTER
-        // if (this.state.allData) {
-        //     async function checkSave (id, data) {
-        //         console.log("checkSave")
-        //         const getUser = await HandleFetch("GET", id);
-        //         if (_.isEqual(getUser, data)) {
-        //             console.log("Equal");
-        //         } else {
-        //             console.log("Not Equal");
-        //             checkSave (id, data);
-        //         }
-        //     }
-        //     checkSave(this.state.id, this.state.allData)
-        // }
     };
     handleUserUpdate = async (newState) => {
-        this.props.update(0)
+        this.props.update(false)
         this.setState({ allData: newState });
         const result = await HandleFetch("PUT", this.state.id, this.state.user.email, newState);
-        if (result.modifiedCount) {
-            this.props.update(result.modifiedCount);
+        if (result.acknowledged) {
+            this.props.update(result.acknowledged);
+        } else {
+            console.error("Something went wrong while saving changes!\nExpected 'true', but received: ", result.acknowledged, ".");
         }
     };
     handleOnDragEnd = (result) => {
