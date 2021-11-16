@@ -4,8 +4,8 @@ const helmet = require('helmet');
 const cors = require('cors')
 const {join} = require('path');
 const { MongoClient } = require('mongodb');
-const api = require('../routes/api');
-const projects = require('../routes/projects');
+const api = require('./routes/api');
+const projects = require('./routes/projects');
 require('dotenv').config();
 
 const port = process.env.PORT || 8000;
