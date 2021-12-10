@@ -79,15 +79,7 @@ html {
     align-items: center;
 }
 
-.loginButton {
-    background-color: transparent;
-    border: none;
-    width: 200px;
-    height: 40px;
-    font-size: 16px;
-}
-
-.logoutButton {
+.loginButton, .logoutButton{
     background-color: transparent;
     border: none;
     width: 200px;
@@ -124,11 +116,7 @@ html {
     color: var(--light-5);
 }
 
-.projectLink:hover {
-    color: black;
-}
-
-.projectLink:focus {
+.projectLink:hover, .projectLink:focus {
     color: black;
 }
 
@@ -138,14 +126,40 @@ html {
     margin-right: 5px;
 }
 
-.buttons {
+.addTask {
+    border: none;
+    background-color: var(--light-2);
+    color: var(--light-5);
+    margin: 0px 20px;
+    padding: 0;
+    height: 30px;
+    width: auto;
+    align-self: stretch;
+}
+
+.addColumn {
+    border: none;
+    background-color: var(--light-2);
+    color: var(--light-5);
+    padding: 0;
+    height: auto;
+    width: 30px;
+}
+
+.deleteButtons, .addProject {
     border: none;
     background-color: transparent;
     color: var(--light-5);
     padding: 0;
 }
 
-.buttons:hover {
+.addTask:hover, .addColumn:hover {
+    cursor: pointer;
+    color: var(--light-1);
+    background-color: var(--light-4);
+}
+
+.deleteButtons:hover, .addProject:hover {
     cursor: pointer;
     color: black;
 }
