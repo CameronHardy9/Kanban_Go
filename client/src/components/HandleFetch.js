@@ -30,7 +30,7 @@ async function HandleFetch(method, id, email, body)  {
     
     try {
 
-        let response = await fetch(`http://localhost:8000/api/user/${id}`, {
+        let response = await fetch(`https://kanban-go.herokuapp.com/api/user/${id}`, {
                 method: `${method}`,
                 mode: "cors",
                 headers: {
