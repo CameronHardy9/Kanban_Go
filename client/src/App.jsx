@@ -13,7 +13,6 @@ function App() {
     const [saveQueue, setSaveQueue] = useState(0);
 
     useEffect(() => {
-        console.log(user);
         if (user) {
             storage.set("KanbanGoAuth", user);
         }
