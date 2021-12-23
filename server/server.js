@@ -8,7 +8,7 @@ const api = require('./routes/api');
 const projects = require('./routes/projects');
 require('dotenv').config();
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 8080;
 
 const app = express();
 
@@ -16,7 +16,7 @@ const app = express();
 app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
-app.use(express.static(join(__dirname, '/client/build')));
+app.use(express.static(join(__dirname, '../client/build')));
 
 app.use('/app', projects);
 app.use('/api', api);
