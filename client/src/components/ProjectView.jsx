@@ -28,7 +28,7 @@ class ProjectView extends React.Component {
         }
     };
     componentDidUpdate = () => {
-        const present = window.location.pathname.split('/').at(-1);
+        const present = document.URL.split('/').reverse()[0];
         if (present !== this.state.currentSelection) {
             this.setState({currentSelection: present})
         }
