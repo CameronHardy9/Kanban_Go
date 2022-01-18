@@ -14,7 +14,7 @@ class ProjectView extends React.Component {
             user: props.userInfo,
             id: props.userInfo.sub.split('|')[1],
             allData: undefined,
-            currentSelection: window.location.pathname.split('/').at(-1),
+            currentSelection: document.URL.split('/').reverse()[0],
         };
     };
     componentDidMount = async () => {
