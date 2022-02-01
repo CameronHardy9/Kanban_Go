@@ -6,6 +6,7 @@
 - MERN Stack
 - User Auth
 - New User Creation
+- Server Using MongoDB
 - Caching
 - Multiple User Projects
 - Auto Save
